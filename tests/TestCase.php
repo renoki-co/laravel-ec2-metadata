@@ -3,6 +3,7 @@
 namespace RenokiCo\Ec2Metadata\Test;
 
 use Orchestra\Testbench\TestCase as Orchestra;
+use RenokiCo\Ec2Metadata\Ec2Metadata;
 
 abstract class TestCase extends Orchestra
 {
@@ -12,6 +13,8 @@ abstract class TestCase extends Orchestra
     public function setUp(): void
     {
         parent::setUp();
+
+        Ec2Metadata::deleteToken();
     }
 
     /**
