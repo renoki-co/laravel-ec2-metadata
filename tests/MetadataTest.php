@@ -48,16 +48,29 @@ class MetadataTest extends TestCase
         $this->assertEquals('kernel-123', Ec2Metadata::kernelId());
     }
 
-    public function test_termination_notice_is_unavailable()
+    public function test_termination_notice()
     {
         Http::fake([
             'http://169.254.169.254/*' => Http::sequence()
                 ->push('some-token', 200)
                 ->push($message = ['action' => 'terminate', 'time' => '2017-09-18T08:22:00Z'], 200)
-                ->push('Not found', 404),
+                ->pushStatus(404),
         ]);
 
         $this->assertEquals($message, Ec2Metadata::terminationNotice());
         $this->assertNull(Ec2Metadata::terminationNotice());
+    }
+
+    public function test_expired_token_gets_recalled()
+    {
+        Http::fake([
+            'http://169.254.169.254/*' => Http::sequence()
+                ->push('some-token', 200)
+                ->pushStatus(401)
+                ->push('some-other-token', 200)
+                ->push('ami-1234', 200),
+        ]);
+
+        $this->assertEquals('ami-1234', Ec2Metadata::ami());
     }
 }

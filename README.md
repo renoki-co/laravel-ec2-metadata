@@ -85,12 +85,6 @@ class Ec2Metadata
 }
 ```
 
-```php
-$termination = Ec2Metadata::terminationNotice();
-
-echo "The time of termination is {$termination['time']}.";
-```
-
 ## Macros
 
 Alternatively to using `get()` and `getJson()`, you can define macros:

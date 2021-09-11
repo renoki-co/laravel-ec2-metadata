@@ -2,7 +2,6 @@
 
 namespace RenokiCo\Ec2Metadata;
 
-use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Traits\Macroable;
@@ -81,46 +80,14 @@ class Ec2Metadata
     }
 
     /**
-     * Get the private hostname of the EC2 instance.
-     *
-     * @return string
-     */
-    public static function privateHostname(): string
-    {
-        return static::get('hostname');
-    }
-
-    /**
-     * Get the public hostname of the EC2 instance.
-     *
-     * @return string
-     */
-    public static function publicHostname(): string
-    {
-        return static::get('public-hostname');
-    }
-
-    /**
      * Get the termination notice, in case the instance is Spot.
      *
      * @return array|null
-     *
-     * @throws \RenokiCo\Ec2Metadata\Exceptions\IsNotInterruptingException
-     * @throws \GuzzleHttp\Exception\ClientException
+     * @throws \Illuminate\Http\Client\RequestException
      */
     public static function terminationNotice(): ?array
     {
-        try {
-            return static::getJson('/spot/instance-action');
-        } catch (ClientException $e) {
-            if ($e->getResponse()->getStatusCode() === 404) {
-                return null;
-            }
-
-            throw $e;
-        }
-
-        return null;
+        return static::getJson('/spot/instance-action');
     }
 
     /**
@@ -172,6 +139,7 @@ class Ec2Metadata
      * @param  string  $method
      * @param  string|null  $token
      * @return \Illuminate\Http\Client\Response
+     * @throws \Illuminate\Http\Client\RequestException
      */
     public static function callWithToken(
         string $endpoint,
@@ -184,17 +152,16 @@ class Ec2Metadata
             }
         }
 
-        try {
-            return Http::withHeaders([
-                'X-AWS-EC2-Metadata-Token' => $token,
-            ])->{$method}('http://169.254.169.254/'.static::$version.$endpoint);
-        } catch (ClientException $e) {
-            // In case the token is expired, regenerate the token and resend the call.
-            if ($e->getResponse()->getStatusCode() === 401) {
-                return static::callWithToken($endpoint, $method, static::regenerateToken());
-            }
+        /** @var \Illuminate\Http\Response $response */
+        $response = Http::withHeaders([
+            'X-AWS-EC2-Metadata-Token' => $token,
+        ])->{$method}('http://169.254.169.254/'.static::$version.$endpoint);
 
-            throw $e;
+        // Automatically retry in case of 401 errors (token might be expired).
+        if ($response->status() === 401) {
+            return static::callWithToken($endpoint, $method, static::regenerateToken());
         }
+
+        return $response;
     }
 }
