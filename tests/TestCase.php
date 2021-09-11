@@ -15,6 +15,7 @@ abstract class TestCase extends Orchestra
         parent::setUp();
 
         Ec2Metadata::deleteToken();
+        Ec2Metadata::version('latest');
     }
 
     /**

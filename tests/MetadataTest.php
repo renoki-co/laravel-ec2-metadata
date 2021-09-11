@@ -72,5 +72,54 @@ class MetadataTest extends TestCase
         ]);
 
         $this->assertEquals('ami-1234', Ec2Metadata::ami());
+
+        Http::assertSentInOrder([
+            function (Request $request) {
+                return $request->method() === 'PUT' &&
+                    $request->url() === 'http://169.254.169.254/latest/api/token' &&
+                    $request->header('X-AWS-EC2-Metadata-Token-TTL-Seconds') === ['21600'];
+            },
+            function (Request $request) {
+                return $request->method() === 'GET' &&
+                    $request->url() === 'http://169.254.169.254/latest/meta-data/ami-id' &&
+                    $request->header('X-AWS-EC2-Metadata-Token') === ['some-token'];
+            },
+            function (Request $request) {
+                return $request->method() === 'PUT' &&
+                    $request->url() === 'http://169.254.169.254/latest/api/token' &&
+                    $request->header('X-AWS-EC2-Metadata-Token-TTL-Seconds') === ['21600'];
+            },
+            function (Request $request) {
+                return $request->method() === 'GET' &&
+                    $request->url() === 'http://169.254.169.254/latest/meta-data/ami-id' &&
+                    $request->header('X-AWS-EC2-Metadata-Token') === ['some-other-token'];
+            },
+        ]);
+    }
+
+    public function test_version()
+    {
+        Ec2Metadata::version('2000-01-01');
+
+        Http::fake([
+            'http://169.254.169.254/*' => Http::sequence()
+                ->push('some-token', 200)
+                ->push('ami-1234', 200),
+        ]);
+
+        $this->assertEquals('ami-1234', Ec2Metadata::ami());
+
+        Http::assertSentInOrder([
+            function (Request $request) {
+                return $request->method() === 'PUT' &&
+                    $request->url() === 'http://169.254.169.254/2000-01-01/api/token' &&
+                    $request->header('X-AWS-EC2-Metadata-Token-TTL-Seconds') === ['21600'];
+            },
+            function (Request $request) {
+                return $request->method() === 'GET' &&
+                    $request->url() === 'http://169.254.169.254/2000-01-01/meta-data/ami-id' &&
+                    $request->header('X-AWS-EC2-Metadata-Token') === ['some-token'];
+            },
+        ]);
     }
 }
