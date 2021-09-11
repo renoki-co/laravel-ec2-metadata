@@ -5,7 +5,6 @@ namespace RenokiCo\Ec2Metadata\Test;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 use RenokiCo\Ec2Metadata\Ec2Metadata;
-use RenokiCo\Ec2Metadata\Exceptions\IsNotInterruptingException;
 
 class MetadataTest extends TestCase
 {

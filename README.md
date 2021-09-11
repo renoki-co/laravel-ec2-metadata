@@ -36,7 +36,6 @@ In this brief example, you can calculate the seconds left until the EC2 Spot ins
 ```php
 use Carbon\Carbon;
 use RenokiCo\Ec2Metadata\Ec2Metadata;
-use RenokiCo\Ec2Metadata\Exceptions\IsNotInterruptingException;
 
 if ($termination = Ec2Metadata::terminationNotice()) {
     // The instance is terminating...
