@@ -1,9 +1,9 @@
-Package Name Here
-===================================
+Laravel EC2 Metadata
+====================
 
 ![CI](https://github.com/renoki-co/laravel-ec2-metadata/workflows/CI/badge.svg?branch=master)
 [![codecov](https://codecov.io/gh/renoki-co/laravel-ec2-metadata/branch/master/graph/badge.svg)](https://codecov.io/gh/renoki-co/laravel-ec2-metadata/branch/master)
-[![StyleCI](https://github.styleci.io/repos/:styleci_code/shield?branch=master)](https://github.styleci.io/repos/:styleci_code)
+[![StyleCI](https://github.styleci.io/repos/404265901/shield?branch=master)](https://github.styleci.io/repos/404265901)
 [![Latest Stable Version](https://poser.pugx.org/renoki-co/laravel-ec2-metadata/v/stable)](https://packagist.org/packages/renoki-co/laravel-ec2-metadata)
 [![Total Downloads](https://poser.pugx.org/renoki-co/laravel-ec2-metadata/downloads)](https://packagist.org/packages/renoki-co/laravel-ec2-metadata)
 [![Monthly Downloads](https://poser.pugx.org/renoki-co/laravel-ec2-metadata/d/monthly)](https://packagist.org/packages/renoki-co/laravel-ec2-metadata)
