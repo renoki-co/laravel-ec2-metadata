@@ -104,6 +104,7 @@ class Ec2Metadata
      * Get the termination notice, in case the instance is Spot.
      *
      * @return array|null
+     *
      * @throws \RenokiCo\Ec2Metadata\Exceptions\IsNotInterruptingException
      * @throws \GuzzleHttp\Exception\ClientException
      */
@@ -150,7 +151,7 @@ class Ec2Metadata
      * Make a call to the given endpoint.
      *
      * @param  string  $endpoint
-     * @param  string $method
+     * @param  string  $method
      * @param  array  $headers
      * @return \Illuminate\Http\Client\Response
      */
