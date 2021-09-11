@@ -6,7 +6,6 @@ use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Traits\Macroable;
-use RenokiCo\Ec2Metadata\Exceptions\IsNotInterruptingException;
 
 class Ec2Metadata
 {
