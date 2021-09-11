@@ -1,6 +1,6 @@
 {
     "name": "renoki-co/laravel-ec2-metadata",
-    "description": ":package_description",
+    "description": "Retrieve the EC2 Metadata using Laravel's eloquent syntax.",
     "keywords": ["laravel", "php", "ec2", "aws", "metadata", "instance", "imds", "amazon", "amazonaws"],
     "license": "Apache-2.0",
     "homepage": "https://github.com/renoki-co/laravel-ec2-metadata",
