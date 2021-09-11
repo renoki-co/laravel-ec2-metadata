@@ -83,6 +83,7 @@ class Ec2Metadata
      * Get the termination notice, in case the instance is Spot.
      *
      * @return array|null
+     *
      * @throws \Illuminate\Http\Client\RequestException
      */
     public static function terminationNotice(): ?array
@@ -139,6 +140,7 @@ class Ec2Metadata
      * @param  string  $method
      * @param  string|null  $token
      * @return \Illuminate\Http\Client\Response
+     *
      * @throws \Illuminate\Http\Client\RequestException
      */
     public static function callWithToken(
