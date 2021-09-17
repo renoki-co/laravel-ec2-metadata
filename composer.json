@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": "^8.0",
-        "guzzlehttp/guzzle": "^6.5|^7.0",
+        "guzzlehttp/guzzle": "^7.3.0",
         "illuminate/http": "^8.18",
         "illuminate/support": "^8.18"
     },
